@@ -24,7 +24,7 @@ body {
 
 main {
   display: grid;
-  grid-template-columns: 550px 1fr;
+  grid-template-columns: 650px 1fr;
 }
 
 .info {
