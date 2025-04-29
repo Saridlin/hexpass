@@ -304,7 +304,7 @@ function hexInRadius(hex, ctr, radius) {
 //get a specific hexagon object in the board
 //if not in return null
 function getHex(array, hex, radius) {
-  if (!includesHex(hex, raidus)) return null;
+  if (!includesHex(hex, radius)) return null;
   for (var i = 0; i < array.length; i++) {
     if (hexIsEquals(hex, array[i])) {
       return array[i];

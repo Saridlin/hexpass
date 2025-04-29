@@ -11,10 +11,13 @@ var boardRadius = 5;
 var size;
 var originHex;
 var hexes = [];
+var hexChar = [];
 var mainLayout;
 
-let path = [Hex(0,0,0)];
-let posHex = Hex(0,0,0);
+let path = [];
+let posHex;
+let pass = [];
+let counter = 0;
 
 
 function setup(){
@@ -51,6 +54,9 @@ function setup(){
   mainLayout = hexLayout(pointyOrient, size, originPixel)
   hexGenerateBoard(boardRadius, hexes, Hex(0,0,0));
   originHex = Hex(0,0,0);
+
+  posHex = Hex(0,0,0);
+  path = [Hex(0,0,0)];
 }
 
 function draw(){
@@ -62,10 +68,16 @@ function draw(){
   push();
   translate(width/2, height/2);
   
+  //drawing main grid
   hexDrawArray(mainLayout, hexes);
 
-  fill(255, 0, 0);
+  //drawing path
+  fill(120, 0, 0);
   hexDrawArray(mainLayout, path);
+
+  //drawing current position
+  fill(255, 0, 0)
+  hexDraw(mainLayout, path[path.length-1]);
 
   for(let i = 0; i < chars.length; i++){
     let currHex = hexes[i];
@@ -73,25 +85,18 @@ function draw(){
     let cx = pt.x;
     let cy = pt.y;
     
+    hexChar[i] = [hexes[i], charTiles[i]];
+
     stroke(0);
     fill(0);
     text(charTiles[i], cx-3, cy+3);
   }
   pop();
+
   if(keyIsPressed){
     checkMove();
   }
-  console.log(path[path.length-1]);
-  fill(200, 0, 0);
 }
-
-
-// function hexDrawArray(layout, hexes, color) {
-//   for (var i = 0; i < hexes.length; i++) {
-//     fill(color);
-//     hexDraw(layout, hexes[i]);
-//   }
-// }
 
 function shuffleArray(array) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -106,45 +111,74 @@ function checkMove(){
   switch(key){
     case 'w':
       //top left - dir 5
-      path.push(hexGetNeighbor(posHex, 5));
-      posHex = path[path.length-1];
-      console.log("w - moved");
+      checkGrid(5);
       break;
     case 'e':
       //top right - dir 0
-      path.push(hexGetNeighbor(posHex, 0));
-      posHex = path[path.length-1];
-      console.log("e - moved");
+      checkGrid(0);
       break;
     case 'a':
       //left - dir 4
-      path.push(hexGetNeighbor(posHex, 4));
-      posHex = path[path.length-1];
-      console.log("a - moved");
+      checkGrid(4);
       break;
      case 'd':
       //right - dir 1
-      path.push(hexGetNeighbor(posHex, 1));
-      posHex = path[path.length-1];
-      console.log("d - moved");
+      checkGrid(1);
       break;
     case 'z':
       //bott left - dir 3
-      path.push(hexGetNeighbor(posHex, 3));
-      posHex = path[path.length-1];
-      console.log("z - moved");
+      checkGrid(3);
       break;
     case 'x':
       //bott right - dir 2
-      path.push(hexGetNeighbor(posHex, 2));
-      posHex = path[path.length-1];
-      console.log("x - moved");
+      checkGrid(2);
+      break;
+    case 'p':
+      fetchPass();
+      let n = "";
+      for (let i = 0; i < pass.length; i++){
+        n = n + pass[i];
+      }
+      console.log(n);
       break;
     default:
       console.log("no move");
       break;
   }
   key = '';
+}
+
+function checkGrid(dir){
+  //checking if next position would fall on grid
+  let temp = getHex(hexes, hexGetNeighbor(posHex, dir), 5);
+  console.log(temp);
+
+  //checking if next tile exisitng in path already
+  let temp2 = false;
+  for (let i = 0; i < path.length; i++){
+    if (temp === path[i]){
+      temp2 = true;
+    }
+  }
+
+  //move if all checks passed successfully
+  if (temp != null && temp2 == false){
+    path.push(temp);
+    posHex = path[path.length-1];
+  } else {
+    console.log("no move");
+  }
+}
+
+function fetchPass(){
+  //let counter = 0;
+  for(let j = 0; j < path.length; j++){
+    for (let i = 0; i < cNum; i++){
+      if(hexIsEquals(path[j], hexChar[i][0])){
+        pass.push(hexChar[i][1]);
+      }
+    }
+  }
 }
 
 
