@@ -1,6 +1,5 @@
 let canvas;
 
-
 let spec = [33, 35, 36, 42, 46, 45, 63, 94, 95]; //special characters KeyCode
 let chars = []; //char list
 let charTiles = []; //char list, but for randomizing
@@ -17,15 +16,15 @@ var mainLayout;
 let path = [];
 let posHex;
 let pass = [];
-let counter = 0;
 
 
 function setup(){
   canvas = createCanvas(600, 600);
-  canvas.parent('canv-holder');
+  canvas.parent('canv-holder'); //setting DOM parent for p5canvas
   background(0);
   angleMode(degrees);
 
+  //setting up character list
   for(let i = 0; i < 26; i++){
     //0-25 = A-Z
     chars[i] = String.fromCharCode(65+i);
@@ -49,21 +48,24 @@ function setup(){
   }
   shuffleArray(charTiles);
 
+  //setting up main hexgrid - copied from tutorial code
   size = Point(30,30);
   originPixel = Point(width/2, height/2);
   mainLayout = hexLayout(pointyOrient, size, originPixel)
   hexGenerateBoard(boardRadius, hexes, Hex(0,0,0));
   originHex = Hex(0,0,0);
 
+  //setting start to movement grid
   posHex = Hex(0,0,0);
   path = [Hex(0,0,0)];
 }
 
 function draw(){
+  stroke(255, 0, 0);
+  point(30,30);
   stroke(0);
   strokeWeight(1);
   fill(255);
-
 
   push();
   translate(width/2, height/2);
@@ -79,6 +81,7 @@ function draw(){
   fill(255, 0, 0)
   hexDraw(mainLayout, path[path.length-1]);
 
+  //drawing characters onto tiles
   for(let i = 0; i < chars.length; i++){
     let currHex = hexes[i];
     let pt = hex2Screen(mainLayout, currHex);
@@ -93,11 +96,13 @@ function draw(){
   }
   pop();
 
+  //movement
   if(keyIsPressed){
     checkMove();
   }
 }
 
+//copied from stackoverflow
 function shuffleArray(array) {
   for (var i = array.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
@@ -170,8 +175,8 @@ function checkGrid(dir){
   }
 }
 
+//printing out collected password
 function fetchPass(){
-  //let counter = 0;
   for(let j = 0; j < path.length; j++){
     for (let i = 0; i < cNum; i++){
       if(hexIsEquals(path[j], hexChar[i][0])){
