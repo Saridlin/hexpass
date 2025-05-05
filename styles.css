@@ -33,6 +33,7 @@ main {
 
 .info {
   display: inline-block;
+  padding-right: 30px;
 }
 
 .moreInfo {
@@ -45,4 +46,9 @@ main {
 
 .p5Canvas {
   margin: 0 30px;
+}
+
+.p5Label {
+  padding-left: 30px;
+  color: rgb(239, 84, 84);
 }

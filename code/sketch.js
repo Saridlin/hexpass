@@ -1,4 +1,5 @@
 let canvas;
+let n = "";
 
 let spec = [33, 35, 36, 42, 46, 45, 63, 94, 95]; //special characters KeyCode
 let chars = []; //char list
@@ -17,6 +18,7 @@ let path = [];
 let posHex;
 let pass = [];
 
+let moveCount = 0;
 
 function setup(){
   canvas = createCanvas(600, 600);
@@ -61,8 +63,6 @@ function setup(){
 }
 
 function draw(){
-  stroke(255, 0, 0);
-  point(30,30);
   stroke(0);
   strokeWeight(1);
   fill(255);
@@ -98,7 +98,15 @@ function draw(){
 
   //movement
   if(keyIsPressed){
-    checkMove();
+    if(key == 'p' || key == 'P'){
+      fetchPass();
+      describe(n + " is your password", LABEL);
+    } else if(moveCount < 12){
+      checkMove();
+    } else {
+      describeElement("Error!! ", "you are out of moves", LABEL);
+    }
+    key = '';
   }
 }
 
@@ -138,14 +146,6 @@ function checkMove(){
       //bott right - dir 2
       checkGrid(2);
       break;
-    case 'p':
-      fetchPass();
-      let n = "";
-      for (let i = 0; i < pass.length; i++){
-        n = n + pass[i];
-      }
-      console.log(n);
-      break;
     default:
       console.log("no move");
       break;
@@ -170,6 +170,7 @@ function checkGrid(dir){
   if (temp != null && temp2 == false){
     path.push(temp);
     posHex = path[path.length-1];
+    moveCount++;
   } else {
     console.log("no move");
   }
@@ -180,11 +181,15 @@ function fetchPass(){
   for(let j = 0; j < path.length; j++){
     for (let i = 0; i < cNum; i++){
       if(hexIsEquals(path[j], hexChar[i][0])){
-        pass.push(hexChar[i][1]);
+        pass[j] = hexChar[i][1];
       }
     }
   }
+
+  n = "";
+  for (let i = 0; i < pass.length; i++){
+    n = n + pass[i];
+  }
+  console.log(n);
 }
-
-
 
