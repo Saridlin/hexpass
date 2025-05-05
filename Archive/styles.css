@@ -1,0 +1,48 @@
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-size: 1.6rem;
+  /* font-size 1.6rem is now the same as 16px */
+  line-height: 1.6;
+}
+
+header {
+  padding-left: 30px;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 650px 1fr;
+}
+
+.info {
+  display: inline-block;
+}
+
+.moreInfo {
+  padding-left: 30px;
+}
+
+.canv {
+  display: inline-block;
+}
+
+.p5Canvas {
+  margin: 0 30px;
+}
