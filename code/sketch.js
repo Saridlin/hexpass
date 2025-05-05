@@ -1,4 +1,4 @@
-let canvas;
+let canvas; // declare variables
 let n = "";
 
 let spec = [33, 35, 36, 42, 46, 45, 63, 94, 95]; //special characters KeyCode
